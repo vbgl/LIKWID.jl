@@ -66,6 +66,8 @@ function finalize_topology()
     return nothing
 end
 
+_unsafe_string(s) = s != C_NULL ? unsafe_string(s) : ""
+
 function _build_jl_cpuinfo()
     ci = _cpuinfo[]
     cpuinfo[] = CpuInfo(ci.family,
@@ -75,10 +77,10 @@ function _build_jl_cpuinfo()
                         ci.part,
                         ci.clock,
                         ci.turbo,
-                        unsafe_string(ci.osname),
-                        unsafe_string(ci.name),
-                        unsafe_string(ci.short_name),
-                        unsafe_string(ci.features),
+                        _unsafe_string(ci.osname),
+                        _unsafe_string(ci.name),
+                        _unsafe_string(ci.short_name),
+                        _unsafe_string(ci.features),
                         ci.isIntel,
                         join(Char(c) for c in ci.architecture if !iszero(c)),
                         ci.supportUncore,
